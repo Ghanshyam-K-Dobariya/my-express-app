@@ -1,0 +1,329 @@
+openapi: "3.1.1"
+info:
+  title: My Express App API
+  version: "1.0.0"
+  description: |
+    OpenAPI 3.1.1 description for the simple student/project REST API implemented in `app.js`.
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+paths:
+  /api/students:
+    get:
+      summary: List all students
+      responses:
+        '200':
+          description: A list of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+    post:
+      summary: Create a new student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                  example: "Jane Doe"
+      responses:
+        '201':
+          description: Created student
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /api/students/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      summary: Get a student by id
+      responses:
+        '200':
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update a student by id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: Updated student
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Delete a student by id
+      responses:
+        '204':
+          description: No content (deleted)
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/projects:
+    get:
+      summary: List all projects
+      responses:
+        '200':
+          description: A list of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+    post:
+      summary: Create a new project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, year]
+              properties:
+                title:
+                  type: string
+                  example: "New Project"
+                year:
+                  type: integer
+                  example: 2025
+      responses:
+        '201':
+          description: Created project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /api/projects/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      summary: Get a project by id
+      responses:
+        '200':
+          description: Project found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update a project by id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, year]
+              properties:
+                title:
+                  type: string
+                year:
+                  type: integer
+      responses:
+        '200':
+          description: Updated project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Delete a project by id
+      responses:
+        '204':
+          description: No content (deleted)
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/students-projects:
+    get:
+      summary: List all student-project relations
+      responses:
+        '200':
+          description: A list of student-project relations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentsProjects'
+    post:
+      summary: Create a new student-project relation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [student_id, project_id]
+              properties:
+                student_id:
+                  type: integer
+                  example: 1
+                project_id:
+                  type: integer
+                  example: 2
+      responses:
+        '201':
+          description: Created student-project relation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentsProjects'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /api/students-projects/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      summary: Get a student-project relation by id
+      responses:
+        '200':
+          description: Relation found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentsProjects'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update a student-project relation by id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [student_id, project_id]
+              properties:
+                student_id:
+                  type: integer
+                project_id:
+                  type: integer
+      responses:
+        '200':
+          description: Updated relation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentsProjects'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Delete a student-project relation by id
+      responses:
+        '204':
+          description: No content (deleted)
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Numeric id of the resource
+  schemas:
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Alice Smith"
+      required: [id, name]
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "AI Chatbot Development"
+        year:
+          type: integer
+          example: 2023
+      required: [id, title, year]
+    StudentsProjects:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        student_id:
+          type: integer
+          example: 1
+        project_id:
+          type: integer
+          example: 2
+      required: [id, student_id, project_id]
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Not found"
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Invalid request"
+
+security: []
