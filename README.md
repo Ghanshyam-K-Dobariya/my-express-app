@@ -12,8 +12,3 @@ A REST API built with Express.js to manage Students, Projects, and Student-Proje
 - **Students**: `/api/students` (GET, POST), `/api/students/:id` (GET, PUT, DELETE)
 - **Projects**: `/api/projects` (GET, POST), `/api/projects/:id` (GET, PUT, DELETE)
 - **Students_Projects**: `/api/students-projects` (GET, POST), `/api/students-projects/:id` (GET, PUT, DELETE)
-
-
-## Sample
-1. https://gkd-mock-service.onrender.com/api/students
-2. https://gkd-mock-service.onrender.com/api/projects
