@@ -28,11 +28,14 @@ paths:
           application/json:
             schema:
               type: object
-              required: [name]
+              required: [name, city]
               properties:
                 name:
                   type: string
                   example: "Jane Doe"
+                city:
+                  type: string
+                  example: "New York"
       responses:
         '201':
           description: Created student
@@ -65,9 +68,11 @@ paths:
           application/json:
             schema:
               type: object
-              required: [name]
+              required: [name, city]
               properties:
                 name:
+                  type: string
+                city:
                   type: string
       responses:
         '200':
@@ -277,7 +282,10 @@ components:
         name:
           type: string
           example: "Alice Smith"
-      required: [id, name]
+        city:
+          type: string
+          example: "New York"
+      required: [id, name, city]
     Project:
       type: object
       properties:

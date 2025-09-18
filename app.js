@@ -6,9 +6,9 @@ app.use(express.json());
 
 let data = {
   Student: [
-    { id: 1, name: "Alice Smith" },
-    { id: 2, name: "Bob Johnson" },
-    { id: 3, name: "Carol Williams" }
+    { id: 1, name: "Alice Smith", city: "New York" },
+    { id: 2, name: "Bob Johnson", city: "Los Angeles" },
+    { id: 3, name: "Carol Williams", city: "Chicago" }
   ],
   Project: [
     { id: 1, title: "AI Chatbot Development", year: 2023 },
@@ -38,9 +38,10 @@ app.get('/api/students/:id', (req, res) => {
 });
 
 app.post('/api/students', (req, res) => {
-  const { name } = req.body;
+  const { name, city } = req.body;
   if (!name) return res.status(400).json({ message: "Name is required" });
-  const newStudent = { id: getNextId('Student'), name };
+  if (!city) return res.status(400).json({ message: "City is required" });
+  const newStudent = { id: getNextId('Student'), name, city };
   data.Student.push(newStudent);
   res.status(201).json(newStudent);
 });
@@ -48,9 +49,11 @@ app.post('/api/students', (req, res) => {
 app.put('/api/students/:id', (req, res) => {
   const student = data.Student.find(s => s.id === parseInt(req.params.id));
   if (!student) return res.status(404).json({ message: "Student not found" });
-  const { name } = req.body;
+  const { name, city } = req.body;
   if (!name) return res.status(400).json({ message: "Name is required" });
+  if (!city) return res.status(400).json({ message: "City is required" });
   student.name = name;
+  student.city = city;
   res.json(student);
 });
 
